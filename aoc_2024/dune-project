@@ -1,0 +1,27 @@
+(lang dune 3.17)
+
+(name aoc_2024)
+
+(generate_opam_files true)
+
+(source
+ (github TydraoXalys/advent_of_code))
+
+(authors "TydraoXalys")
+
+(maintainers "TydraoXalys")
+
+; (license )
+
+; (documentation )
+
+(package
+ (name aoc_2024)
+ (synopsis " ")
+ (description " ")
+ (depends ocaml)
+;  (tags
+  ; )
+  )
+
+; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
