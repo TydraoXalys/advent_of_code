@@ -6,6 +6,7 @@
 (* PRINT FUNCTIONS                      *)
 (* ==================================== *)
 
+(** Improves print_int function by adding a print_newline *)
 let print_result x =
   begin
     print_int x;

@@ -6,6 +6,17 @@
 type locations = { mutable left: int list; mutable right: int list}
 
 (* ==================================== *)
+(* PRINT FUNCTIONS                      *)
+(* ==================================== *)
+
+(** Improves print_int function by adding a print_newline *)
+let print_result x =
+  begin
+    print_int x;
+    print_newline ();
+  end
+
+(* ==================================== *)
 (* PUZZLE PARSING                       *)
 (* ==================================== *)
 
@@ -87,10 +98,8 @@ let compute_similarity locations =
 let () =
   let locations = read_file "./day01/day01.input" in 
   begin
-    print_int (compute_total_distance locations);
-    print_newline ();
-    print_int (compute_similarity locations);
-    print_newline ();
+    print_result (compute_total_distance locations);
+    print_result (compute_similarity locations);
   end
 
 
