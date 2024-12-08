@@ -35,7 +35,7 @@ let are_rules_broken lvl1 lvl2 comparator =
   (is_fst_rule_broken lvl1 lvl2 comparator) || (is_snd_rule_broken lvl1 lvl2)
 
 let rec print_list l = match l with
-  | [] -> ()
+  | [] -> print_newline ()
   | t :: q -> begin print_int t; print_char ' '; print_list q; end
 
 (* ==================================== *)
@@ -141,7 +141,10 @@ let rec next_iteration report previous_lvl comparator bad_lvl_found =
     (* Code of check_iteration() *)
     in if (
       bad_lvl_found || (
-        are_rules_broken previous_lvl lvl2 comparator && 
+        (
+          are_rules_broken previous_lvl lvl2 comparator || 
+          are_rules_broken lvl2 next_lvl comparator
+        ) && 
         are_rules_broken lvl1 next_lvl comparator
       )
     )
@@ -216,19 +219,41 @@ let is_safe_with_dampener report =
 let rec count_safe_with_dampener reports = match reports with
   | []                                             -> 0
   | report :: q when is_safe_with_dampener report  -> 1 + count_safe_with_dampener q
-  | report :: q                                    -> begin print_list report; print_newline (); count_safe_with_dampener q; end
+  | report :: q                                    -> 
+    begin
+      print_list report;
+      count_safe_with_dampener q;
+    end
+
+(* let rec compute_comparator r = match r with
+  | [] -> 0
+  | _ :: [] -> 0
+  | t1 :: t2 :: q -> 
+    begin
+      print_int t1;
+      print_char ' ';
+      print_int t2;
+      print_newline ();
+      compute_comparator (t2::q) + compare t1 t2
+    end *)
 
 (* ==================================== *)
 (* MAIN                                 *)
 (* ==================================== *)
 
+let print_result x =
+  begin
+    print_int x;
+    print_newline ();
+  end
+
 let () =
   let reports = read_file "./day02/day02.input" in 
   begin
-    print_int (count_safe reports);
-    print_newline ();
-    print_int (count_safe_with_dampener reports);
-    print_newline ();
+    print_result (count_safe reports);
+    print_result (count_safe_with_dampener reports);
+
+    (* print_result (compute_comparator [6;8;7;6]); *)
   end
 
 (* =================================== *)
