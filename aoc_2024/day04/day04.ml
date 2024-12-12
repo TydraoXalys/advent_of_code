@@ -102,9 +102,7 @@ let count_in_lines_and_downward_diags matrix =
         evaluate_lines_and_downward_diags j 
         + count_in_lines_and_downward_diags_rec (j+4)
 
-  in match (Array.length matrix) with
-    | length when length <= 3 -> 0
-    | _                       -> count_in_lines_and_downward_diags_rec 3
+  in count_in_lines_and_downward_diags_rec 3
 
 (** Counts all "XMAS" and "SAMX" in every column and every upward diagonal of the given matrix of char.
   * It analyzes the matrix according to each column i such that i = 4*k-1., with k integer such that 0 < k < number_of_lines/4.
@@ -148,9 +146,7 @@ let count_in_columns_and_upward_diag matrix =
         evaluate_columns_and_upward_diags i 
         + count_in_columns_and_upward_diag_rec (i+4)
 
-  in match (Array.length matrix) with
-    | length when length <= 3 -> 0
-    | _                       -> count_in_columns_and_upward_diag_rec 3
+  in count_in_columns_and_upward_diag_rec 3
 
 (** Counts all "XMAS" and "SAMX" in the given matrix of char.
   *
