@@ -133,7 +133,7 @@ let count_in_columns_and_upward_diag matrix =
 
   in let evaluate_columns_and_upward_diags i =
     let rec aux i j = match j with
-      | j when j = Array.length matrix.(0)  -> 0
+      | j when j = Array.length matrix.(i)  -> 0
       | j                                   -> 
           search (extract_from_column i j) "XMAS"
           + search (extract_from_upward_diag i j) "XMAS"
@@ -161,7 +161,58 @@ let count_xmas matrix =
 (* PART TWO                             *)
 (* ==================================== *)
 
+(** Searches in each line and each column all occurences of two MAS in the shape of an X.
+  * Does it by looking for each case of the matrix that contains a 'A' and, for each of them, analyses the corresponding X shape.
+  *
+  * Awaited shape (or equivalent):
+  * M S       M M       S M       S S
+  *  A    or   A    or   A    or   A
+  * M S       S S       S M       M M
+  *
+  * Params:
+  * - matrix : The matrix to process
+  *)
+let count_mas matrix = 
 
+  let extract_from_upward_diag i j = 
+    let rec aux i j before_stop = match i,j with
+      | _,_ when before_stop = 0              -> []
+      | i,_ when i < 0                        -> []
+      | i,_ when i >= Array.length matrix     -> aux (i-1) (j+1) (before_stop-1)
+      | _,j when j < 0                        -> aux (i-1) (j+1) (before_stop-1)
+      | _,j when j >= Array.length matrix.(i) -> []
+      | i,j                                   -> matrix.(i).(j) :: aux (i-1) (j+1) (before_stop-1)
+    in String.of_seq (List.to_seq (aux (i+1) (j-1) 3))
+
+  in let extract_from_downward_diag i j = 
+    let rec aux i j before_stop = match i,j with
+      | _,_ when before_stop = 0              -> []
+      | i,_ when i < 0                        -> aux (i+1) (j+1) (before_stop-1)
+      | i,_ when i >= Array.length matrix     -> []
+      | _,j when j < 0                        -> aux (i+1) (j+1) (before_stop-1)
+      | _,j when j >= Array.length matrix.(i) -> []
+      | i,j                                   -> matrix.(i).(j) :: aux (i+1) (j+1) (before_stop-1)
+    in String.of_seq (List.to_seq (aux (i-1) (j-1) 3))
+
+  in let evaluate_diags i j = match i,j with
+    | i,j when matrix.(i).(j) != 'A'  -> 0
+    | i,j                             -> 
+        if
+          search (extract_from_upward_diag i j) "MAS"
+          + search (extract_from_downward_diag i j) "MAS"
+          = 2
+        then 1
+        else 0
+
+  in let rec count_mas_rec i = 
+    let rec aux i j = match j with 
+      | j when j >= Array.length matrix.(i) -> 0
+      | j                                   -> evaluate_diags i j + aux i (j+1)
+    in match i with
+      | i when i >= Array.length matrix -> 0
+      | i                               -> aux i 0 + count_mas_rec (i+1)
+
+  in count_mas_rec 0
 
 (* ==================================== *)
 (* MAIN                                 *)
@@ -171,6 +222,7 @@ let () =
   let matrix = read_file "./day04/day04.input" in 
   begin
     print_result (count_xmas matrix);
+    print_result (count_mas matrix);
   end
 
 (* =================================== *)
