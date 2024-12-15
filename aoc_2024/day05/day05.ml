@@ -51,21 +51,6 @@ let print_result x =
   print_int x; 
   print_newline ()
 
-(* let print_string_list l =
-  let rec aux l = match l with
-    | []      -> ()
-    | t :: [] -> print_string t
-    | t :: q  -> print_string t; print_string " ; "; aux q
-  in print_string "[ "; aux l; print_string " ]"; print_newline ()
-
-let rec print_rules rules = match rules with
-  | []      -> ()
-  | t :: q  -> 
-      print_string t.page; 
-      print_string ": "; 
-      print_string_list t.pages_after; 
-      print_rules q *)
-
 (* ==================================== *)
 (* COMMON FUNCTIONS                     *)
 (* ==================================== *)
